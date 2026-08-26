@@ -1,0 +1,6 @@
+# compilação
+*.o
+*.d
+
+# executável
+biblioteca
