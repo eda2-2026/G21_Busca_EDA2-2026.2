@@ -4,6 +4,7 @@
 #include "normalizacao.h"
 
 #include <algorithm>
+#include <ostream>
 #include <stdexcept>
 
 IndiceTitulosHash::IndiceTitulosHash(std::size_t quantidadeBuckets)
@@ -97,6 +98,40 @@ bool IndiceTitulosHash::remover(const std::string &titulo,
 	}
 
 	return false;
+}
+
+void IndiceTitulosHash::mostrarEstrutura(std::ostream &saida) const {
+	bool possuiEntradas = false;
+
+	for (std::size_t indice = 0; indice < buckets.size(); ++indice) {
+		const auto &bucket = buckets[indice];
+
+		if (bucket.empty()) {
+			continue;
+		}
+
+		possuiEntradas = true;
+		saida << "Bucket " << indice << ":\n";
+
+		for (const EntradaTitulo &entrada : bucket) {
+			saida << "  " << entrada.tituloNormalizado << " -> ";
+
+			for (std::size_t posicao = 0; posicao < entrada.isbns.size();
+				 ++posicao) {
+				if (posicao > 0) {
+					saida << ", ";
+				}
+
+				saida << entrada.isbns[posicao];
+			}
+
+			saida << '\n';
+		}
+	}
+
+	if (!possuiEntradas) {
+		saida << "Indice de titulos vazio.\n";
+	}
 }
 
 std::size_t IndiceTitulosHash::getQuantidadeBuckets() const {

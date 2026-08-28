@@ -2,6 +2,7 @@
 #define INDICE_TITULOS_HASH_H
 
 #include <cstddef>
+#include <iosfwd>
 #include <list>
 #include <string>
 #include <vector>
@@ -18,6 +19,7 @@ public:
 	bool adicionar(const std::string &titulo, const std::string &isbn);
 	std::vector<std::string> buscar(const std::string &titulo) const;
 	bool remover(const std::string &titulo, const std::string &isbn);
+	void mostrarEstrutura(std::ostream &saida) const;
 	std::size_t getQuantidadeBuckets() const;
 
 private:
