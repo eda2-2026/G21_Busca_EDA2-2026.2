@@ -64,6 +64,41 @@ std::vector<std::string> IndiceTitulosHash::buscar(
 	return {};
 }
 
+bool IndiceTitulosHash::remover(const std::string &titulo,
+								const std::string &isbn) {
+	const std::string tituloNormalizado = normalizarTitulo(titulo);
+	const std::string isbnNormalizado = normalizarIsbn(isbn);
+
+	if (tituloNormalizado.empty() || isbnNormalizado.empty()) {
+		return false;
+	}
+
+	auto &bucket = buckets[calcularIndice(tituloNormalizado)];
+
+	for (auto entrada = bucket.begin(); entrada != bucket.end(); ++entrada) {
+		if (entrada->tituloNormalizado != tituloNormalizado) {
+			continue;
+		}
+
+		const auto isbnEncontrado = std::find(
+			entrada->isbns.begin(), entrada->isbns.end(), isbnNormalizado);
+
+		if (isbnEncontrado == entrada->isbns.end()) {
+			return false;
+		}
+
+		entrada->isbns.erase(isbnEncontrado);
+
+		if (entrada->isbns.empty()) {
+			bucket.erase(entrada);
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
 std::size_t IndiceTitulosHash::getQuantidadeBuckets() const {
 	return quantidadeBuckets;
 }
