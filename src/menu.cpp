@@ -22,7 +22,15 @@ void Menu::executar() {
         std::cout << "[0] Sair" << std::endl;
         std::cout << "Escolha uma opção: ";
 
-        std::cin >> opcao;
+        if (!(std::cin >> opcao)) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            opcao = -1;
+            std::cout << "[Erro] Opção inválida! Digite um número." << std::endl;
+            continue;
+        }
+
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
         switch (opcao) {
             case 1: {
@@ -43,35 +51,35 @@ void Menu::executar() {
                 std::getline(std::cin, editora);
                 
                 std::cout << "Ano de publicação: ";
-                if (!(std::cin >> ano)) {
-                    std::cin.clear();
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    std::cout << "Erro: Ano de publicação inválido. Cadastro cancelado." << std::endl;
+                std::cin >> ano;
+
+                if (isbn.empty() || titulo.empty() || autor.empty() || editora.empty()) {
+                    std::cout << "[Erro] Todos os campos são obrigatórios." << std::endl;
                     break;
                 }
 
                 Livro livro(isbn, titulo, autor, editora, ano);
                 
                 if (catalogo.cadastrar(livro)) {
-                    std::cout << "Sucesso: Livro cadastrado na tabela hash!" << std::endl;
+                    std::cout << "[Info] Livro cadastrado!" << std::endl;
                 } else {
-                    std::cout << "Erro: O ISBN informado já existe no catálogo." << std::endl;
+                    std::cout << "[Erro] ISBN inválido ou já cadastrado." << std::endl;
                 }
                 break;
             }
             case 2: {
                 std::string isbn;
-                std::cout << "\n========= Busca =========" << std::endl;
+                std::cout << "\n============== Busca ==============" << std::endl;
                 std::cout << "\nISBN: ";
                 std::getline(std::cin, isbn);
 
                 auto livro = catalogo.buscarPorIsbn(isbn);
                 if (!livro) {
-                    std::cout << "Livro não encontrado." << std::endl;
+                    std::cout << "[Erro] Livro não encontrado." << std::endl;
                     break;
                 }
 
-                std::cout << "\n========= Resultado =========" << std::endl;
+                std::cout << "\n============ Resultado ============" << std::endl;
                 std::cout << "ISBN: " << livro->getIsbn() << std::endl;
                 std::cout << "Título: " << livro->getTitulo() << std::endl;
                 std::cout << "Autor(a): " << livro->getAutor() << std::endl;
@@ -80,10 +88,10 @@ void Menu::executar() {
                 break;
             }
             case 0:
-                std::cout << "Saindo..." << std::endl;
+                std::cout << "[Info] Saindo..." << std::endl;
                 break;
             default:
-                std::cout << "Opção inválida! Tente novamente." << std::endl;
+                std::cout << "[Erro] Opção inválida! Tente novamente." << std::endl;
         }
     } while (opcao != 0);
 }
