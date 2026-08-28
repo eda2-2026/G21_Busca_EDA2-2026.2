@@ -1,8 +1,14 @@
 #include <iostream>
 
-using namespace std;
+#include "catalogo.h"
+#include "menu.h"
 
-int main() {
-	cout << "hello world" << endl;
-	return 0;
+int main() {  
+      
+    Catalogo catalogo;
+    Menu menu(catalogo);
+    
+    menu.executar();
+
+    return 0;
 }

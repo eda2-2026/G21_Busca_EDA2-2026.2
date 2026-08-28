@@ -3,35 +3,30 @@
 
 #include <string>
 
-using namespace std;
-
 class Livro {
 
 private:
-	string isbn;
-	string titulo;
-	string autor;
-	string editora;
+	std::string isbn;
+	std::string titulo;
+	std::string autor;
+	std::string editora;
 	int anoPublicacao;
 	bool disponivel;
 
 public:
-	Livro(const string &isbn, const string &titulo, const string &autor, const string &editora,
-		  int anoPublicacao, bool disponivel = true);
+	Livro(const std::string &isbn, const std::string &titulo, const std::string &autor,
+		  const std::string &editora, int anoPublicacao);
 
-	const string &getIsbn() const;
-	const string &getTitulo() const;
-	const string &getAutor() const;
-	const string &getEditora() const;
+	const std::string &getIsbn() const;
+	const std::string &getTitulo() const;
+	const std::string &getAutor() const;
+	const std::string &getEditora() const;
 	int getAnoPublicacao() const;
-	bool getDisponivel() const;
 
-	void setIsbn(const string &isbn);
-	void setTitulo(const string &titulo);
-	void setAutor(const string &autor);
-	void setEditora(const string &editora);
+	void setTitulo(const std::string &titulo);
+	void setAutor(const std::string &autor);
+	void setEditora(const std::string &editora);
 	void setAnoPublicacao(int anoPublicacao);
-	void setDisponivel(bool disponivel);
 };
 
 #endif
