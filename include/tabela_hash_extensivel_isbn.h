@@ -28,6 +28,7 @@ public:
 
 	bool inserir(const Livro &livro);
 	std::optional<Livro> buscar(const std::string &isbn) const;
+	std::vector<Livro> listarTodos() const;
 
 private:
 	std::size_t profundidadeGlobal;

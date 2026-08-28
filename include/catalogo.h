@@ -18,6 +18,7 @@ public:
 
     bool cadastrar(const Livro &livro);
     std::optional<Livro> buscarPorIsbn(const std::string &isbn) const;
+    std::vector<Livro> listarTodos() const;  
 };
 
 #endif

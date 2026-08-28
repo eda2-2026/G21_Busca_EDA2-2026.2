@@ -5,6 +5,7 @@
 
 #include <cctype>
 #include <stdexcept>
+#include <unordered_set>
 
 BucketIsbn::BucketIsbn(std::size_t profundidadeLocal, std::size_t capacidade)
 	: profundidadeLocal(profundidadeLocal), capacidade(capacidade) {
@@ -146,4 +147,21 @@ void TabelaHashExtensivelIsbn::dividirBucket(const std::shared_ptr<BucketIsbn> &
 		std::size_t indice = calcularIndice(calcularHash(livro.getIsbn()));
 		diretorio[indice]->livros.push_back(livro);
 	}
+}
+
+std::vector<Livro> TabelaHashExtensivelIsbn::listarTodos() const {
+	std::vector<Livro> livros;
+	std::unordered_set<const BucketIsbn *> bucketsVisitados;
+
+	for (const auto &bucket : diretorio) {
+		if (!bucketsVisitados.insert(bucket.get()).second) {
+			continue;
+		}
+
+		for (const Livro &livro : bucket->livros) {
+			livros.push_back(livro);
+		}
+	}
+
+	return livros;
 }

@@ -87,6 +87,23 @@ void Menu::executar() {
                 std::cout << "Ano de publicação: " << livro->getAnoPublicacao() << std::endl;
                 break;
             }
+            case 6: {
+                std::cout << "\n========= Lista de Livros =========" << std::endl;
+                auto livros = catalogo.listarTodos();
+                if (livros.empty()) {
+                    std::cout << "[Info] Nenhum livro cadastrado." << std::endl;
+                    break;
+                }
+
+                for (const auto &livro : livros) {
+                    std::cout << "\nISBN: " << livro.getIsbn() << std::endl;
+                    std::cout << "Título: " << livro.getTitulo() << std::endl;
+                    std::cout << "Autor(a): " << livro.getAutor() << std::endl;
+                    std::cout << "Editora: " << livro.getEditora() << std::endl;
+                    std::cout << "Ano de publicação: " << livro.getAnoPublicacao() << std::endl;
+                }
+                break;
+            }
             case 0:
                 std::cout << "[Info] Saindo..." << std::endl;
                 break;
