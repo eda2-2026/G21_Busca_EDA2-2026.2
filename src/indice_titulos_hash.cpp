@@ -45,6 +45,25 @@ bool IndiceTitulosHash::adicionar(const std::string &titulo,
 	return true;
 }
 
+std::vector<std::string> IndiceTitulosHash::buscar(
+	const std::string &titulo) const {
+	const std::string tituloNormalizado = normalizarTitulo(titulo);
+
+	if (tituloNormalizado.empty()) {
+		return {};
+	}
+
+	const auto &bucket = buckets[calcularIndice(tituloNormalizado)];
+
+	for (const EntradaTitulo &entrada : bucket) {
+		if (entrada.tituloNormalizado == tituloNormalizado) {
+			return entrada.isbns;
+		}
+	}
+
+	return {};
+}
+
 std::size_t IndiceTitulosHash::getQuantidadeBuckets() const {
 	return quantidadeBuckets;
 }

@@ -16,6 +16,7 @@ public:
 	explicit IndiceTitulosHash(std::size_t quantidadeBuckets = 101);
 
 	bool adicionar(const std::string &titulo, const std::string &isbn);
+	std::vector<std::string> buscar(const std::string &titulo) const;
 	std::size_t getQuantidadeBuckets() const;
 
 private:
