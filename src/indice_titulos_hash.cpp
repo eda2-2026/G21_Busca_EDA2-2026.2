@@ -1,7 +1,9 @@
 #include "indice_titulos_hash.h"
 
 #include "funcao_hash.h"
+#include "normalizacao.h"
 
+#include <algorithm>
 #include <stdexcept>
 
 IndiceTitulosHash::IndiceTitulosHash(std::size_t quantidadeBuckets)
@@ -10,6 +12,37 @@ IndiceTitulosHash::IndiceTitulosHash(std::size_t quantidadeBuckets)
 		throw std::invalid_argument(
 			"A quantidade de buckets deve ser maior que zero");
 	}
+}
+
+bool IndiceTitulosHash::adicionar(const std::string &titulo,
+								  const std::string &isbn) {
+	const std::string tituloNormalizado = normalizarTitulo(titulo);
+	const std::string isbnNormalizado = normalizarIsbn(isbn);
+
+	if (tituloNormalizado.empty() || isbnNormalizado.empty()) {
+		return false;
+	}
+
+	auto &bucket = buckets[calcularIndice(tituloNormalizado)];
+
+	for (EntradaTitulo &entrada : bucket) {
+		if (entrada.tituloNormalizado != tituloNormalizado) {
+			continue;
+		}
+
+		const auto isbnExistente = std::find(
+			entrada.isbns.begin(), entrada.isbns.end(), isbnNormalizado);
+
+		if (isbnExistente != entrada.isbns.end()) {
+			return false;
+		}
+
+		entrada.isbns.push_back(isbnNormalizado);
+		return true;
+	}
+
+	bucket.push_back({tituloNormalizado, {isbnNormalizado}});
+	return true;
 }
 
 std::size_t IndiceTitulosHash::getQuantidadeBuckets() const {

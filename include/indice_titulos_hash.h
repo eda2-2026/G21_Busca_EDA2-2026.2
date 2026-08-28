@@ -15,6 +15,7 @@ class IndiceTitulosHash {
 public:
 	explicit IndiceTitulosHash(std::size_t quantidadeBuckets = 101);
 
+	bool adicionar(const std::string &titulo, const std::string &isbn);
 	std::size_t getQuantidadeBuckets() const;
 
 private:
