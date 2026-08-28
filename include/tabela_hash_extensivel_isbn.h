@@ -4,12 +4,13 @@
 #include "livro.h"
 
 #include <cstddef>
+#include <cstdint>
 #include <memory>
+#include <optional>
 #include <vector>
 
 struct BucketIsbn {
-	explicit BucketIsbn(std::size_t profundidadeLocal,
-						std::size_t capacidade);
+	explicit BucketIsbn(std::size_t profundidadeLocal, std::size_t capacidade);
 
 	std::size_t profundidadeLocal;
 	std::size_t capacidade;
@@ -17,18 +18,26 @@ struct BucketIsbn {
 };
 
 class TabelaHashExtensivelIsbn {
+
 public:
-	explicit TabelaHashExtensivelIsbn(
-		std::size_t capacidadeBucket = 4);
+	explicit TabelaHashExtensivelIsbn(std::size_t capacidadeBucket = 4);
 
 	std::size_t getProfundidadeGlobal() const;
 	std::size_t getCapacidadeBucket() const;
 	std::size_t getTamanhoDiretorio() const;
 
+	bool inserir(const Livro &livro);
+	std::optional<Livro> buscar(const std::string &isbn) const;
+
 private:
 	std::size_t profundidadeGlobal;
 	std::size_t capacidadeBucket;
 	std::vector<std::shared_ptr<BucketIsbn>> diretorio;
+
+	static bool isbnValido(const std::string &isbnNormalizado);
+	std::size_t calcularIndice(std::uint64_t hash) const;
+	void duplicarDiretorio();
+	void dividirBucket(const std::shared_ptr<BucketIsbn> &bucket);
 };
 
 #endif
