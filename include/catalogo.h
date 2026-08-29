@@ -21,6 +21,7 @@ public:
 
     bool cadastrar(const Livro &livro);
     std::optional<Livro> buscarPorIsbn(const std::string &isbn) const;
+    std::vector<Livro> buscarPorTitulo(const std::string &titulo) const;
     std::vector<Livro> listarTodos() const;  
     void visualizarHashIsbn(std::ostream &saida) const;
 };

@@ -88,6 +88,28 @@ void Menu::executar() {
                 std::cout << "Ano de publicação: " << livro->getAnoPublicacao() << std::endl;
                 break;
             }
+            case 3: {
+                std::string titulo;
+                std::cout << "\n========= Busca por Título =========" << std::endl;
+                std::cout << "Título: ";
+                std::getline(std::cin, titulo);
+
+                const auto livros = catalogo.buscarPorTitulo(titulo);
+                if (livros.empty()) {
+                    std::cout << "[Erro] Livro não encontrado." << std::endl;
+                    break;
+                }
+
+                std::cout << "\n============ Resultados ============" << std::endl;
+                for (const auto &livro : livros) {
+                    std::cout << "\nISBN: " << livro.getIsbn() << std::endl;
+                    std::cout << "Título: " << livro.getTitulo() << std::endl;
+                    std::cout << "Autor(a): " << livro.getAutor() << std::endl;
+                    std::cout << "Editora: " << livro.getEditora() << std::endl;
+                    std::cout << "Ano de publicação: " << livro.getAnoPublicacao() << std::endl;
+                }
+                break;
+            }
             case 6: {
                 std::cout << "\n========= Lista de Livros =========" << std::endl;
                 auto livros = catalogo.listarTodos();
