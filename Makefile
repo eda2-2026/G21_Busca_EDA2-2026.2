@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -Iinclude
+CXXFLAGS = -Wall -Wextra -std=c++17 -finput-charset=UTF-8 -fexec-charset=UTF-8 -Iinclude
 
 TARGET = biblioteca
 
