@@ -1,8 +1,9 @@
 #include "menu.h"
 
 #include <iostream>
-#include <string>
 #include <limits>
+#include <sstream>
+#include <string>
 
 Menu::Menu(Catalogo &catalogo)
     : catalogo(catalogo) {
@@ -19,6 +20,7 @@ void Menu::executar() {
         std::cout << "[4] Atualizar livro" << std::endl;
         std::cout << "[5] Remover livro" << std::endl;
         std::cout << "[6] Listar todos os livros" << std::endl;
+        std::cout << "[7] Visualizar hashing por ISBN" << std::endl;
         std::cout << "[0] Sair" << std::endl;
         std::cout << "Escolha uma opção: ";
 
@@ -35,8 +37,8 @@ void Menu::executar() {
         switch (opcao) {
             case 1: {
                 std::cout << "\n========= Cadastrar Livro =========" << std::endl;
-                std::string isbn, titulo, autor, editora;
-                int ano;
+                std::string isbn, titulo, autor, editora, anoInformado;
+                int ano = 0;
 
                 std::cout << "ISBN: ";
                 std::getline(std::cin, isbn);
@@ -51,7 +53,14 @@ void Menu::executar() {
                 std::getline(std::cin, editora);
                 
                 std::cout << "Ano de publicação: ";
-                std::cin >> ano;
+                std::getline(std::cin, anoInformado);
+
+                std::istringstream conversorAno(anoInformado);
+                char caractereExtra;
+                if (!(conversorAno >> ano) || (conversorAno >> caractereExtra)) {
+                    std::cout << "[Erro] Ano inválido! Digite apenas números." << std::endl;
+                    break;
+                }
 
                 if (isbn.empty() || titulo.empty() || autor.empty() || editora.empty()) {
                     std::cout << "[Erro] Todos os campos são obrigatórios." << std::endl;
@@ -85,6 +94,28 @@ void Menu::executar() {
                 std::cout << "Autor(a): " << livro->getAutor() << std::endl;
                 std::cout << "Editora: " << livro->getEditora() << std::endl;
                 std::cout << "Ano de publicação: " << livro->getAnoPublicacao() << std::endl;
+                break;
+            }
+            case 3: {
+                std::string titulo;
+                std::cout << "\n========= Busca por Título =========" << std::endl;
+                std::cout << "Título: ";
+                std::getline(std::cin, titulo);
+
+                const auto livros = catalogo.buscarPorTitulo(titulo);
+                if (livros.empty()) {
+                    std::cout << "[Erro] Livro não encontrado." << std::endl;
+                    break;
+                }
+
+                std::cout << "\n============ Resultados ============" << std::endl;
+                for (const auto &livro : livros) {
+                    std::cout << "\nISBN: " << livro.getIsbn() << std::endl;
+                    std::cout << "Título: " << livro.getTitulo() << std::endl;
+                    std::cout << "Autor(a): " << livro.getAutor() << std::endl;
+                    std::cout << "Editora: " << livro.getEditora() << std::endl;
+                    std::cout << "Ano de publicação: " << livro.getAnoPublicacao() << std::endl;
+                }
                 break;
             }
             case 4: {
@@ -165,6 +196,11 @@ void Menu::executar() {
                     std::cout << "Editora: " << livro.getEditora() << std::endl;
                     std::cout << "Ano de publicação: " << livro.getAnoPublicacao() << std::endl;
                 }
+                break;
+            }
+            case 7: {
+                std::cout << "\n===== Hashing Extensivel por ISBN =====" << std::endl;
+                catalogo.visualizarHashIsbn(std::cout);
                 break;
             }
             case 0:

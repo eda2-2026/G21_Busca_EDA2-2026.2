@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iosfwd>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -31,6 +32,7 @@ public:
 	bool atualizar(const Livro &livro);
 	bool remover(const std::string &isbn);
 	std::vector<Livro> listarTodos() const;
+	void visualizarEstrutura(std::ostream &saida) const;
 
 private:
 	std::size_t profundidadeGlobal;

@@ -1,6 +1,7 @@
 # Trabalho 1: Aplicação de Hashing em um sistema de biblioteca
 
 ## Sumário
+
 - [Sobre](#sobre)
 - [Funcionalidades](#funcionalidades)
 - [Implementação](#implementação)
