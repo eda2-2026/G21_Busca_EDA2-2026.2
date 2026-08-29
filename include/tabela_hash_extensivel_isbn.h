@@ -5,6 +5,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iosfwd>
 #include <memory>
 #include <optional>
 #include <vector>
@@ -29,6 +30,7 @@ public:
 	bool inserir(const Livro &livro);
 	std::optional<Livro> buscar(const std::string &isbn) const;
 	std::vector<Livro> listarTodos() const;
+	void visualizarEstrutura(std::ostream &saida) const;
 
 private:
 	std::size_t profundidadeGlobal;

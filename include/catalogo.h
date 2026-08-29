@@ -4,6 +4,7 @@
 #include "livro.h"
 #include "tabela_hash_extensivel_isbn.h"
 
+#include <iosfwd>
 #include <string>
 #include <vector>
 #include <optional>
@@ -19,6 +20,7 @@ public:
     bool cadastrar(const Livro &livro);
     std::optional<Livro> buscarPorIsbn(const std::string &isbn) const;
     std::vector<Livro> listarTodos() const;  
+    void visualizarHashIsbn(std::ostream &saida) const;
 };
 
 #endif

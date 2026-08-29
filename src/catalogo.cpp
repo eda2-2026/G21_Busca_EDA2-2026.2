@@ -11,3 +11,7 @@ std::optional<Livro> Catalogo::buscarPorIsbn(const std::string &isbn) const {
 std::vector<Livro> Catalogo::listarTodos() const {
    return tabelaHashIsbn.listarTodos();
 }
+
+void Catalogo::visualizarHashIsbn(std::ostream &saida) const {
+   tabelaHashIsbn.visualizarEstrutura(saida);
+}

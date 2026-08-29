@@ -19,6 +19,7 @@ void Menu::executar() {
         std::cout << "[4] Atualizar livro" << std::endl;
         std::cout << "[5] Remover livro" << std::endl;
         std::cout << "[6] Listar todos os livros" << std::endl;
+        std::cout << "[7] Visualizar hashing por ISBN" << std::endl;
         std::cout << "[0] Sair" << std::endl;
         std::cout << "Escolha uma opção: ";
 
@@ -102,6 +103,11 @@ void Menu::executar() {
                     std::cout << "Editora: " << livro.getEditora() << std::endl;
                     std::cout << "Ano de publicação: " << livro.getAnoPublicacao() << std::endl;
                 }
+                break;
+            }
+            case 7: {
+                std::cout << "\n===== Hashing Extensivel por ISBN =====" << std::endl;
+                catalogo.visualizarHashIsbn(std::cout);
                 break;
             }
             case 0:

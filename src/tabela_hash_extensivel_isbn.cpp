@@ -4,8 +4,28 @@
 #include "funcao_hash.h"
 
 #include <cctype>
+#include <ostream>
 #include <stdexcept>
+#include <string>
+#include <unordered_map>
 #include <unordered_set>
+#include <utility>
+
+namespace {
+
+std::string formatarIndiceBinario(std::size_t indice, std::size_t quantidadeBits) {
+	std::string resultado(quantidadeBits, '0');
+
+	for (std::size_t bit = 0; bit < quantidadeBits; ++bit) {
+		if ((indice & (std::size_t{1} << bit)) != 0) {
+			resultado[quantidadeBits - bit - 1] = '1';
+		}
+	}
+
+	return resultado;
+}
+
+}
 
 BucketIsbn::BucketIsbn(std::size_t profundidadeLocal, std::size_t capacidade)
 	: profundidadeLocal(profundidadeLocal), capacidade(capacidade) {
@@ -164,4 +184,44 @@ std::vector<Livro> TabelaHashExtensivelIsbn::listarTodos() const {
 	}
 
 	return livros;
+}
+
+void TabelaHashExtensivelIsbn::visualizarEstrutura(std::ostream &saida) const {
+	std::unordered_map<const BucketIsbn *, std::size_t> identificadores;
+	std::vector<std::shared_ptr<BucketIsbn>> bucketsUnicos;
+
+	for (const auto &bucket : diretorio) {
+		auto resultado = identificadores.emplace(bucket.get(), identificadores.size() + 1);
+
+		if (resultado.second) {
+			bucketsUnicos.push_back(bucket);
+		}
+	}
+
+	saida << "Profundidade global: " << profundidadeGlobal << '\n';
+	saida << "Entradas no diretorio: " << diretorio.size() << '\n';
+	saida << "Capacidade por bucket: " << capacidadeBucket << " livro(s)\n\n";
+
+	saida << "Diretorio:\n";
+	for (std::size_t indice = 0; indice < diretorio.size(); ++indice) {
+		saida << "  " << formatarIndiceBinario(indice, profundidadeGlobal)
+		      << " -> Bucket " << identificadores.at(diretorio[indice].get()) << '\n';
+	}
+
+	saida << "\nBuckets:\n";
+	for (const auto &bucket : bucketsUnicos) {
+		saida << "  Bucket " << identificadores.at(bucket.get())
+		      << " | profundidade local: " << bucket->profundidadeLocal
+		      << " | ocupacao: " << bucket->livros.size() << '/' << bucket->capacidade << '\n';
+
+		if (bucket->livros.empty()) {
+			saida << "    (vazio)\n";
+			continue;
+		}
+
+		for (const Livro &livro : bucket->livros) {
+			saida << "    - ISBN: " << livro.getIsbn()
+			      << " | Titulo: " << livro.getTitulo() << '\n';
+		}
+	}
 }
