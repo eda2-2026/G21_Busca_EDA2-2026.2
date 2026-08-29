@@ -20,6 +20,11 @@
 
 ### Decisões técnicas
 
+A classe `Catalogo` é responsável por coordenar a tabela principal por ISBN e
+o índice secundário por título. Ela corresponde à classe `Biblioteca` descrita
+no planejamento; foi mantido apenas o nome `Catalogo` no código para evitar duas
+classes com a mesma responsabilidade.
+
 ## Como executar
 
 ### Pré-requisitos

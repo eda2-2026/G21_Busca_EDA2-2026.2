@@ -1,8 +1,9 @@
 #include "menu.h"
 
 #include <iostream>
-#include <string>
 #include <limits>
+#include <sstream>
+#include <string>
 
 Menu::Menu(Catalogo &catalogo)
     : catalogo(catalogo) {
@@ -36,8 +37,8 @@ void Menu::executar() {
         switch (opcao) {
             case 1: {
                 std::cout << "\n========= Cadastrar Livro =========" << std::endl;
-                std::string isbn, titulo, autor, editora;
-                int ano;
+                std::string isbn, titulo, autor, editora, anoInformado;
+                int ano = 0;
 
                 std::cout << "ISBN: ";
                 std::getline(std::cin, isbn);
@@ -52,7 +53,14 @@ void Menu::executar() {
                 std::getline(std::cin, editora);
                 
                 std::cout << "Ano de publicação: ";
-                std::cin >> ano;
+                std::getline(std::cin, anoInformado);
+
+                std::istringstream conversorAno(anoInformado);
+                char caractereExtra;
+                if (!(conversorAno >> ano) || (conversorAno >> caractereExtra)) {
+                    std::cout << "[Erro] Ano inválido! Digite apenas números." << std::endl;
+                    break;
+                }
 
                 if (isbn.empty() || titulo.empty() || autor.empty() || editora.empty()) {
                     std::cout << "[Erro] Todos os campos são obrigatórios." << std::endl;
