@@ -11,7 +11,6 @@ private:
 	std::string autor;
 	std::string editora;
 	int anoPublicacao;
-	bool disponivel;
 
 public:
 	Livro(const std::string &isbn, const std::string &titulo, const std::string &autor,

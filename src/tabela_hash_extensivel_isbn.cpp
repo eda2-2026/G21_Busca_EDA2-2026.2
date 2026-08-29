@@ -33,62 +33,6 @@ std::size_t TabelaHashExtensivelIsbn::getTamanhoDiretorio() const {
 	return diretorio.size();
 }
 
-bool TabelaHashExtensivelIsbn::inserir(const Livro &livro) {
-	std::string isbnNormalizado = normalizarIsbn(livro.getIsbn());
-
-	if (!isbnValido(isbnNormalizado)) {
-		return false;
-	}
-
-	std::uint64_t hash = calcularHash(isbnNormalizado);
-	Livro livroNormalizado(isbnNormalizado, livro.getTitulo(),
-		livro.getAutor(), livro.getEditora(), livro.getAnoPublicacao());
-
-	while (true) {
-		auto bucket = diretorio[calcularIndice(hash)];
-
-		for (const Livro &livroExistente : bucket->livros) {
-			if (livroExistente.getIsbn() == isbnNormalizado) {
-				return false;
-			}
-		}
-
-		if (bucket->livros.size() < bucket->capacidade) {
-			bucket->livros.push_back(livroNormalizado);
-			return true;
-		}
-
-		if (profundidadeGlobal == 63 && bucket->profundidadeLocal == profundidadeGlobal) {
-			bucket->livros.push_back(livroNormalizado);
-			return true;
-		}
-
-		if (bucket->profundidadeLocal == profundidadeGlobal) {
-			duplicarDiretorio();
-		}
-
-		dividirBucket(bucket);
-	}
-}
-
-std::optional<Livro> TabelaHashExtensivelIsbn::buscar(const std::string &isbn) const {
-	std::string isbnNormalizado = normalizarIsbn(isbn);
-
-	if (!isbnValido(isbnNormalizado)) {
-		return std::nullopt;
-	}
-
-	const auto &bucket = diretorio[calcularIndice(calcularHash(isbnNormalizado))];
-
-	for (const Livro &livro : bucket->livros) {
-		if (livro.getIsbn() == isbnNormalizado) {
-			return livro;
-		}
-	}
-
-	return std::nullopt;
-}
-
 bool TabelaHashExtensivelIsbn::isbnValido(const std::string &isbnNormalizado) {
 	if (isbnNormalizado.empty()) {
 		return false;
@@ -147,6 +91,100 @@ void TabelaHashExtensivelIsbn::dividirBucket(const std::shared_ptr<BucketIsbn> &
 		std::size_t indice = calcularIndice(calcularHash(livro.getIsbn()));
 		diretorio[indice]->livros.push_back(livro);
 	}
+}
+
+bool TabelaHashExtensivelIsbn::inserir(const Livro &livro) {
+	std::string isbnNormalizado = normalizarIsbn(livro.getIsbn());
+
+	if (!isbnValido(isbnNormalizado)) {
+		return false;
+	}
+
+	std::uint64_t hash = calcularHash(isbnNormalizado);
+	Livro livroNormalizado(isbnNormalizado, livro.getTitulo(), livro.getAutor(), livro.getEditora(), livro.getAnoPublicacao());
+
+	while (true) {
+		auto bucket = diretorio[calcularIndice(hash)];
+
+		for (const Livro &livroExistente : bucket->livros) {
+			if (livroExistente.getIsbn() == isbnNormalizado) {
+				return false;
+			}
+		}
+
+		if (bucket->livros.size() < bucket->capacidade) {
+			bucket->livros.push_back(livroNormalizado);
+			return true;
+		}
+
+		if (profundidadeGlobal == 63 && bucket->profundidadeLocal == profundidadeGlobal) {
+			bucket->livros.push_back(livroNormalizado);
+			return true;
+		}
+
+		if (bucket->profundidadeLocal == profundidadeGlobal) {
+			duplicarDiretorio();
+		}
+
+		dividirBucket(bucket);
+	}
+}
+
+std::optional<Livro> TabelaHashExtensivelIsbn::buscar(const std::string &isbn) const {
+	std::string isbnNormalizado = normalizarIsbn(isbn);
+
+	if (!isbnValido(isbnNormalizado)) {
+		return std::nullopt;
+	}
+
+	const auto &bucket = diretorio[calcularIndice(calcularHash(isbnNormalizado))];
+
+	for (const Livro &livro : bucket->livros) {
+		if (livro.getIsbn() == isbnNormalizado) {
+			return livro;
+		}
+	}
+
+	return std::nullopt;
+}
+
+bool TabelaHashExtensivelIsbn::atualizar(const Livro &livro) {
+	std::string isbnNormalizado = normalizarIsbn(livro.getIsbn());
+
+	if (!isbnValido(isbnNormalizado)) {
+		return false;
+	}
+
+	auto &bucket = diretorio[calcularIndice(calcularHash(isbnNormalizado))];
+	Livro livroNormalizado(isbnNormalizado, livro.getTitulo(), livro.getAutor(), livro.getEditora(), livro.getAnoPublicacao());
+
+	for (Livro &livroExistente : bucket->livros) {
+		if (livroExistente.getIsbn() == isbnNormalizado) {
+			livroExistente = livroNormalizado;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool TabelaHashExtensivelIsbn::remover(const std::string &isbn) {
+	std::string isbnNormalizado = normalizarIsbn(isbn);
+
+	if (!isbnValido(isbnNormalizado)) {
+		return false;
+	}
+
+	auto &bucket = diretorio[calcularIndice(calcularHash(isbnNormalizado))];
+
+	for (auto livro = bucket->livros.begin(); livro != bucket->livros.end(); ++livro) {
+		if (livro->getIsbn() == isbnNormalizado) {
+			bucket->livros.erase(livro);
+			return true;
+		}
+	}
+
+	return false;
 }
 
 std::vector<Livro> TabelaHashExtensivelIsbn::listarTodos() const {

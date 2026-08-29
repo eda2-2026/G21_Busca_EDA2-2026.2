@@ -28,6 +28,8 @@ public:
 
 	bool inserir(const Livro &livro);
 	std::optional<Livro> buscar(const std::string &isbn) const;
+	bool atualizar(const Livro &livro);
+	bool remover(const std::string &isbn);
 	std::vector<Livro> listarTodos() const;
 
 private:

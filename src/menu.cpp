@@ -87,6 +87,69 @@ void Menu::executar() {
                 std::cout << "Ano de publicação: " << livro->getAnoPublicacao() << std::endl;
                 break;
             }
+            case 4: {
+                std::string isbn;
+                std::cout << "\n======= Atualizar Livro =======" << std::endl;
+                std::cout << "ISBN do livro: ";
+                std::getline(std::cin, isbn);
+
+                auto livroAtual = catalogo.buscarPorIsbn(isbn);
+                if (!livroAtual) {
+                    std::cout << "[Erro] Livro não encontrado." << std::endl;
+                    break;
+                }
+
+                std::string titulo = livroAtual->getTitulo();
+                std::string autor = livroAtual->getAutor();
+                std::string editora = livroAtual->getEditora();
+                int ano = livroAtual->getAnoPublicacao();
+                std::string entrada;
+
+                std::cout << "Novo título [enter para manter o atual]: ";
+                std::getline(std::cin, entrada);
+                if (!entrada.empty()) {
+                    titulo = entrada;
+                }
+
+                std::cout << "Novo autor(a) [enter para manter o atual]: ";
+                std::getline(std::cin, entrada);
+                if (!entrada.empty()) {
+                    autor = entrada;
+                }
+
+                std::cout << "Nova editora [enter para manter a atual]: ";
+                std::getline(std::cin, entrada);
+                if (!entrada.empty()) {
+                    editora = entrada;
+                }
+
+                std::cout << "Novo ano [enter para manter o atual]: ";
+                std::getline(std::cin, entrada);
+                if (!entrada.empty()) {
+                    ano = std::stoi(entrada);
+                }
+
+                Livro livroAtualizado(isbn, titulo, autor, editora, ano);
+                if (catalogo.atualizar(livroAtualizado)) {
+                    std::cout << "[Info] Livro atualizado!" << std::endl;
+                } else {
+                    std::cout << "[Erro] Não foi possível atualizar o livro." << std::endl;
+                }
+                break;
+            }
+            case 5: {
+                std::string isbn;
+                std::cout << "\n======== Remover Livro ========" << std::endl;
+                std::cout << "ISBN do livro: ";
+                std::getline(std::cin, isbn);
+
+                if (catalogo.removerPorIsbn(isbn)) {
+                    std::cout << "[Info] Livro removido!" << std::endl;
+                } else {
+                    std::cout << "[Erro] Livro não encontrado." << std::endl;
+                }
+                break;
+            }
             case 6: {
                 std::cout << "\n========= Lista de Livros =========" << std::endl;
                 auto livros = catalogo.listarTodos();

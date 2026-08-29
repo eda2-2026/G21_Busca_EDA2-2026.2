@@ -2,6 +2,7 @@
 #define CATALOGO_H
 
 #include "livro.h"
+#include "indice_titulos_hash.h"
 #include "tabela_hash_extensivel_isbn.h"
 
 #include <string>
@@ -12,12 +13,15 @@ class Catalogo {
     
 private:
     TabelaHashExtensivelIsbn tabelaHashIsbn;
+    IndiceTitulosHash indiceTitulos;
 
 public:
     Catalogo() = default;
 
     bool cadastrar(const Livro &livro);
     std::optional<Livro> buscarPorIsbn(const std::string &isbn) const;
+    bool atualizar(const Livro &livro);
+    bool removerPorIsbn(const std::string &isbn);
     std::vector<Livro> listarTodos() const;  
 };
 

@@ -10,13 +10,11 @@
 IndiceTitulosHash::IndiceTitulosHash(std::size_t quantidadeBuckets)
 	: quantidadeBuckets(quantidadeBuckets), buckets(quantidadeBuckets) {
 	if (quantidadeBuckets == 0) {
-		throw std::invalid_argument(
-			"A quantidade de buckets deve ser maior que zero");
+		throw std::invalid_argument("A quantidade de buckets deve ser maior que zero");
 	}
 }
 
-bool IndiceTitulosHash::adicionar(const std::string &titulo,
-								  const std::string &isbn) {
+bool IndiceTitulosHash::adicionar(const std::string &titulo, const std::string &isbn) {
 	const std::string tituloNormalizado = normalizarTitulo(titulo);
 	const std::string isbnNormalizado = normalizarIsbn(isbn);
 
@@ -65,8 +63,7 @@ std::vector<std::string> IndiceTitulosHash::buscar(
 	return {};
 }
 
-bool IndiceTitulosHash::remover(const std::string &titulo,
-								const std::string &isbn) {
+bool IndiceTitulosHash::remover(const std::string &titulo, const std::string &isbn) {
 	const std::string tituloNormalizado = normalizarTitulo(titulo);
 	const std::string isbnNormalizado = normalizarIsbn(isbn);
 
@@ -130,7 +127,7 @@ void IndiceTitulosHash::mostrarEstrutura(std::ostream &saida) const {
 	}
 
 	if (!possuiEntradas) {
-		saida << "Indice de titulos vazio.\n";
+		saida << "Índice de títulos vazio.\n";
 	}
 }
 
