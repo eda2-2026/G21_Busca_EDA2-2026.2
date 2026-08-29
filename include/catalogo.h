@@ -1,6 +1,7 @@
 #ifndef CATALOGO_H
 #define CATALOGO_H
 
+#include "indice_titulos_hash.h"
 #include "livro.h"
 #include "tabela_hash_extensivel_isbn.h"
 
@@ -13,6 +14,7 @@ class Catalogo {
     
 private:
     TabelaHashExtensivelIsbn tabelaHashIsbn;
+    IndiceTitulosHash indiceTitulos;
 
 public:
     Catalogo() = default;
