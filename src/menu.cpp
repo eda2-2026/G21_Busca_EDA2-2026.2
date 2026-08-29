@@ -157,7 +157,16 @@ void Menu::executar() {
                 std::cout << "Novo ano [enter para manter o atual]: ";
                 std::getline(std::cin, entrada);
                 if (!entrada.empty()) {
-                    ano = std::stoi(entrada);
+                    std::istringstream conversorAno(entrada);
+                    int novoAno = 0;
+                    char caractereExtra;
+
+                    if (!(conversorAno >> novoAno) || (conversorAno >> caractereExtra)) {
+                        std::cout << "[Erro] Ano inválido! Digite apenas números." << std::endl;
+                        break;
+                    }
+
+                    ano = novoAno;
                 }
 
                 Livro livroAtualizado(isbn, titulo, autor, editora, ano);
