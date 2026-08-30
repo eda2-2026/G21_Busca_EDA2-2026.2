@@ -1,9 +1,13 @@
 #include "menu.h"
 
+#include "livros_exemplo.h"
+
+#include <cstddef>
 #include <iostream>
 #include <limits>
 #include <sstream>
 #include <string>
+#include <vector>
 
 Menu::Menu(Catalogo &catalogo)
     : catalogo(catalogo) {
@@ -21,6 +25,7 @@ void Menu::executar() {
         std::cout << "[5] Remover livro" << std::endl;
         std::cout << "[6] Listar todos os livros" << std::endl;
         std::cout << "[7] Visualizar hashing por ISBN" << std::endl;
+        std::cout << "[8] Carregar livros de demonstração" << std::endl;
         std::cout << "[0] Sair" << std::endl;
         std::cout << "Escolha uma opção: ";
 
@@ -210,6 +215,39 @@ void Menu::executar() {
             case 7: {
                 std::cout << "\n===== Hashing Extensivel por ISBN =====" << std::endl;
                 catalogo.visualizarHashIsbn(std::cout);
+                break;
+            }
+            case 8: {
+                const bool catalogoEstavaVazio = catalogo.listarTodos().empty();
+                const std::vector<Livro> livrosExemplo = criarLivrosExemplo();
+                std::size_t quantidadeCadastrada = 0;
+
+                for (const Livro &livro : livrosExemplo) {
+                    if (catalogo.cadastrar(livro)) {
+                        ++quantidadeCadastrada;
+                    }
+                }
+
+                const std::size_t quantidadeIgnorada =
+                    livrosExemplo.size() - quantidadeCadastrada;
+
+                std::cout << "\n======= Livros de Demonstração =======" << std::endl;
+                std::cout << "[Info] Livros cadastrados: " << quantidadeCadastrada
+                          << std::endl;
+
+                if (quantidadeIgnorada > 0) {
+                    std::cout << "[Info] Livros ignorados: "
+                              << quantidadeIgnorada << std::endl;
+                }
+
+                if (!catalogoEstavaVazio) {
+                    std::cout << "[Aviso] Para repetir a divisão desde o estado inicial, "
+                                 "reinicie a aplicação e use primeiro a opção 8."
+                              << std::endl;
+                }
+
+                std::cout << "[Info] Use a opção 7 para visualizar a divisão dos buckets."
+                          << std::endl;
                 break;
             }
             case 0:

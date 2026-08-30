@@ -48,7 +48,8 @@ Os livros ficam armazenados em memória durante a execução. O ISBN é usado co
 - atualizar os dados de um livro, mantendo o ISBN como identificador;
 - remover um livro pelo ISBN;
 - listar todos os livros cadastrados;
-- visualizar o diretório e os buckets do hashing extensível por ISBN.
+- visualizar o diretório e os buckets do hashing extensível por ISBN;
+- carregar livros de demonstração que provocam uma divisão de bucket.
 
 ## Algoritmos e estruturas de dados
 
@@ -133,6 +134,7 @@ Em um caso ruim, com muitas colisões no mesmo bucket, as buscas podem se aproxi
 │   ├── funcao_hash.h
 │   ├── indice_titulos_hash.h
 │   ├── livro.h
+│   ├── livros_exemplo.h
 │   ├── menu.h
 │   ├── normalizacao.h
 │   └── tabela_hash_extensivel_isbn.h
@@ -141,6 +143,7 @@ Em um caso ruim, com muitas colisões no mesmo bucket, as buscas podem se aproxi
 │   ├── funcao_hash.cpp
 │   ├── indice_titulos_hash.cpp
 │   ├── livro.cpp
+│   ├── livros_exemplo.cpp
 │   ├── main.cpp
 │   ├── menu.cpp
 │   ├── normalizacao.cpp
@@ -232,7 +235,22 @@ Ao iniciar a aplicação, o seguinte menu é exibido:
 [5] Remover livro
 [6] Listar todos os livros
 [7] Visualizar hashing por ISBN
+[8] Carregar livros de demonstração
 [0] Sair
 ```
 
 Digite o número da operação e informe os campos solicitados. A busca por título é exata depois da normalização. Por exemplo, espaços repetidos e diferenças entre letras ASCII maiúsculas e minúsculas não alteram o resultado.
+
+### Demonstração da divisão de bucket
+
+Com o catálogo vazio, selecione a opção 8 para cadastrar cinco livros preparados para chegar inicialmente ao mesmo bucket. Como cada bucket aceita quatro livros, o quinto cadastro provoca a duplicação do diretório e a divisão do bucket.
+
+| ISBN | Título |
+| --- | --- |
+| `9780000000002` | Estruturas de Dados |
+| `9780000000019` | Estruturas de Dados |
+| `9780000000026` | Algoritmos em C++ |
+| `9780000000033` | Banco de Dados |
+| `9780000000040` | Redes de Computadores |
+
+Em seguida, selecione a opção 7. A visualização deverá mostrar profundidade global 2 e quatro entradas no diretório. A opção 8 também inclui dois livros com o título `Estruturas de Dados`, permitindo demonstrar uma busca por título que retorna mais de um resultado.

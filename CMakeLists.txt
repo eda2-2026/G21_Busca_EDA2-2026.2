@@ -11,6 +11,7 @@ add_executable(biblioteca
     src/funcao_hash.cpp
     src/indice_titulos_hash.cpp
     src/livro.cpp
+    src/livros_exemplo.cpp
     src/main.cpp
     src/menu.cpp
     src/normalizacao.cpp
