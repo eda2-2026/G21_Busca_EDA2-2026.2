@@ -17,7 +17,7 @@ Os livros ficam armazenados em memória durante a execução. O ISBN é usado co
 
 ## Sobre
 
-### Apresentação do trabalho: [assistir ao vídeo]()
+### Apresentação do trabalho: [assistir ao vídeo](https://youtu.be/aIuzGhLyyEw)
 
 ### Desenvolvedores
 
